@@ -12,6 +12,11 @@ Y=[y1;y2;y3;y4;y5;y6];
 YT=Y.';
 Z=(Y*YT)*1/(n);
 e=eig(Z)*(2^8);
+for i=1:length(e)
+    if e(i)==0
+        e(i)=1;
+    end
+end
 diary songShape.txt
 out=uniForm(e(1),e(2),e(3),e(4),e(5),e(6))
 diary off

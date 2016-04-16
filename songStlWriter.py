@@ -1,15 +1,20 @@
 import string
 page=open('songShape.txt','r+')
 lines=page.readlines()
-#first we get the scale factor for each number
-mant=float(lines[3][3:6])
-power=float(lines[3][8:10])
-scale=mant*10**power
+#first we find and get the scale factor for each number
+if len(lines[3])<20:
+    mant=float(lines[3][3:6])
+    power=float(lines[3][8:10])
+    scale=mant*10**power
+    start=5
+else:
+    scale=1
+    start = 3
 print(scale)#scale is good
-
+print(lines[start])
 #then we make a list for the points
 points=[]
-for i in range(5,len(lines)):
+for i in range(start,len(lines)-1):
     tempLst=[]
     for j in range(3):
         ten=j*10
@@ -23,7 +28,6 @@ for i in range(5,len(lines)):
     
 #now we need to connect the dots into triangles
 stMat=[]
-tc=0
 for i in range(len(points)):
     uTrip=[]
     lTrip=[]

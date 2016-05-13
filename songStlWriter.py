@@ -1,5 +1,15 @@
-import string
-page=open('songShape.txt','r+')
+import os
+while True:
+    try:
+        sngName=str(input('Song Name: '))
+        for i in os.listdir(os.getcwd()):
+            if (sngName.lower() in i.lower()) == True:
+                f = i
+        break
+    except(NameError,TypeError,SyntaxError):
+        print 'invalid'
+
+page=open(f,'r+')
 lines=page.readlines()
 #first we find and get the scale factor for each number
 if len(lines[3])<20:
@@ -80,7 +90,7 @@ print(len(points))
 print(points[len(points)-1])
 page.close()
 
-with open('song.stl','w+') as file:
+with open(f+'.stl','w+') as file:
     file.write('\nsolid Default')
     for i in range(len(stMat)):
         file.write('\n  facet normal 0.000000e+00 0.000000e+00 -1.000000e+00 \n    outer loop \n')
@@ -89,4 +99,4 @@ with open('song.stl','w+') as file:
             file.write('\n')
         file.write('    endloop\n  endfacet')
     file.write('\nendsolid Default')
-
+    

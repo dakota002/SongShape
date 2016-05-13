@@ -5,4 +5,5 @@ The general idea is that this program can be fed a song file (.mp3, .wav, etc) a
 These are then fed into the superformula as defined here: https://en.wikipedia.org/wiki/Superformula
 The result is a list of [x y z] coordinates that can be plotted to make a shape.
 
-The shapes are not coming out totally right anymore...
+Fixed an issue with the shapes coming out completely wrong caused by a formatting difference between
+the matlab files.

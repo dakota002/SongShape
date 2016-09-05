@@ -54,10 +54,6 @@ else:
         points.append([tPt1,tPt2,tPt3])
 
 
-#Test lines for confirming scale and lines
-'''print(scale)
-print(lines[start])'''
-
 #now we need to connect the dots into triangles
 stMat=[]
 for i in range(len(points)):
@@ -107,19 +103,7 @@ for i in range(len(points)):
         stMat.append(lTrip)
 
 
-#Test lines to confirm that points and stMat are not empty
-'''print(stMat[0][0])
-print(stMat[len(stMat)-1])
-print(len(points))
-print(points[len(points)-1])'''
 page.close()
-
-#Writes a text file with the triangles listed as [[x,y,z],[x,y,z],[x,y,z]].
-#Used for debugging mainly
-'''with open('stMat.txt','w+') as file:
-    for i in stMat:
-        file.write(str(i)+'\n')'''
-
 
 #Writes the stl file from the stMat, however, leaves an open hole in the top
 with open(f+'.stl','w+') as file:

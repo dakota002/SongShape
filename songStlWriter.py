@@ -1,4 +1,6 @@
 import os
+from math import pi, ceil
+
 while True:
     try:
         sngName=str(input('Song Name: '))
@@ -8,6 +10,15 @@ while True:
         break
     except(NameError,TypeError,SyntaxError):
         print 'invalid'
+
+#Get resolution of the shape
+stepRes = float(sys.argv[1])
+
+#Number of steps in the phi rotation
+#Comes from rounded up value of pi/(stepRes)
+phiSteps = ceil(pi/stepRes)
+theSteps = ceil(2*pi/stepRes)
+
 
 page=open(f,'r+')
 lines=page.readlines()
@@ -55,47 +66,52 @@ else:
 
 
 #now we need to connect the dots into triangles
+#the final "column" of points is found by the following:
+# (StepsInThetaRotation * StepsInPhiRotation) - (StepsInPhiRotation + 1)
+#This is where the 7874 previously came from
+fCol = (theSteps * phiSteps) - (phiSteps + 1)
+
 stMat=[]
 for i in range(len(points)):
     uTrip=[]
     lTrip=[]
-    if i > 7874:
-        if points[i]==points[i%63]:
+    if i > fCol:
+        if points[i]==points[i%phiSteps]:
             continue
         else:
-            if ((i%63)==0):
+            if ((i%phiSteps)==0):
                 lTrip.append(points[i])
-                lTrip.append(points[i%63])
+                lTrip.append(points[i%phiSteps])
                 lTrip.append(points[(i+1)])
-            elif ((i%63)==62):
+            elif ((i%phiSteps)==(phiSteps-1)):
                 uTrip.append(points[i])
-                uTrip.append(points[i%63])
-                uTrip.append(points[(i%63)-1])
+                uTrip.append(points[i%phiSteps])
+                uTrip.append(points[(i%phiSteps)-1])
             else:
                 uTrip.append(points[i])
-                uTrip.append(points[i%63])
-                uTrip.append(points[(i%63)-1])
+                uTrip.append(points[i%phiSteps])
+                uTrip.append(points[(i%phiSteps)-1])
                 lTrip.append(points[i])
-                lTrip.append(points[i%63])
+                lTrip.append(points[i%phiSteps])
                 lTrip.append(points[(i+1)])
     else:
-        if points[i]==points[i+63]:
+        if points[i]==points[i+phiSteps]:
             continue
         else:
-            if ((i%63)==0):
+            if ((i%phiSteps)==0):
                 lTrip.append(points[i])
-                lTrip.append(points[i+63])
+                lTrip.append(points[i+phiSteps])
                 lTrip.append(points[i+1])
-            elif ((i%63)==62):
+            elif ((i%phiSteps)==(phiSteps-1)):
                 uTrip.append(points[i])
-                uTrip.append(points[i+63])
-                uTrip.append(points[i+62])
+                uTrip.append(points[i+phiSteps])
+                uTrip.append(points[i+(phiSteps-1)])
             else:
                 uTrip.append(points[i])
-                uTrip.append(points[i+63])
-                uTrip.append(points[i+62])
+                uTrip.append(points[i+phiSteps])
+                uTrip.append(points[i+(phiSteps-1)])
                 lTrip.append(points[i])
-                lTrip.append(points[i+63])
+                lTrip.append(points[i+phiSteps])
                 lTrip.append(points[i+1])
     if uTrip!=[]:
         stMat.append(uTrip)
@@ -114,10 +130,10 @@ with open(f+'.stl','w+') as file:
             file.write('      vertex '+str(stMat[i][j][0])+' '+str(stMat[i][j][1])+' '+str(stMat[i][j][2]))
             file.write('\n')
         file.write('    endloop\n  endfacet')
-    for i in range(125):
+    for i in range(theSteps):
         file.write('\n  facet normal 0.000000e+00 0.000000e+00 -1.000000e+00 \n    outer loop \n')
         file.write('      vertex '+str(points[0][0])+' '+str(points[0][1])+' '+str(points[0][2])+'\n')
-        file.write('      vertex '+str(points[i*63+1][0])+' '+str(points[i*63+1][1])+' '+str(points[i*63+1][2])+'\n')
-        file.write('      vertex '+str(points[(i+1)*63+1][0])+' '+str(points[(i+1)*63+1][1])+' '+str(points[(i+1)*63+1][2])+'\n')
+        file.write('      vertex '+str(points[i*phiSteps+1][0])+' '+str(points[i*phiSteps+1][1])+' '+str(points[i*phiSteps+1][2])+'\n')
+        file.write('      vertex '+str(points[(i+1)*phiSteps+1][0])+' '+str(points[(i+1)*phiSteps+1][1])+' '+str(points[(i+1)*phiSteps+1][2])+'\n')
         file.write('    endloop\n  endfacet')
     file.write('\nendsolid Default')

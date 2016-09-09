@@ -1,5 +1,5 @@
 %Makes points based on song using uniForm function
-function out = songShape(Song)
+function out = songShape(Song,Resolution)
 y = audioread(Song);
 n=floor(length(y)/6);
 y1=y(1:n);
@@ -18,5 +18,5 @@ for i=1:length(e)
     end
 end
 diary songShape.txt
-out=uniForm(e(1),e(2),e(3),e(4),e(5),e(6))
+out=uniForm(e(1),e(2),e(3),e(4),e(5),e(6),Resolution)
 diary off

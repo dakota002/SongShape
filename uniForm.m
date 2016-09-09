@@ -1,6 +1,6 @@
-function pointSets = uniForm(a,b,m,n_1,n_2,n_3)
-theta=(-pi:.05:pi);
-phi=(-pi/2:.05:pi/2);
+function pointSets = uniForm(a,b,m,n_1,n_2,n_3,res)
+theta=(-pi:res:pi);
+phi=(-pi/2:res:pi/2);
 pointSets=[];
 for i=1:length(theta)
     for j=1:length(phi)
